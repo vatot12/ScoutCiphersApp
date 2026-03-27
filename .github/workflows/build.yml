@@ -3,7 +3,7 @@ name: Build Scout Cipher APK
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch:  # lets you trigger it manually from the GitHub website
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,14 +19,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Grant execute permission to gradlew
-        run: chmod +x gradlew
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.0'
 
       - name: Build debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
